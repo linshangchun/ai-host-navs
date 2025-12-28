@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "name": "ai-host-navs",
+  "builds": [
+    { "src": "public/**/*", "use": "@vercel/static" }
+  ],
+  "cleanUrls": true
+}

@@ -1,0 +1,275 @@
+# AI HOST NAVS - AI产品导航站
+
+> 一个简洁高效的网站链接导航工具站，分组收录全球AI产品网站资源。
+
+## 在线预览
+
+- [HOST NAVS - 站导@Github Deploy](https://linshangchun.github.io/ai-host-navs/)
+- [HOST NAVS - 站导@Vercel Deploy](https://ai-host-navs.vercel.app/)
+
+## 功能特性
+
+- 📄 **YAML 配置驱动** - 通过 `host.conf` 管理所有导航数据
+- 🏷️ **分组导航** - 支持多分组切换，每组显示链接数量
+- 🔍 **模糊搜索** - 支持搜索链接名称、描述和 URL
+- 🎨 **双视图模式** - 卡片视图和列表视图自由切换
+- 📱 **响应式设计** - 完美适配手机、平板、桌面端
+- 🖼️ **智能图标** - 支持多种图标获取策略
+- ⚡ **纯前端** - 无需后端，静态部署即可
+
+## 快速开始
+
+### 1. 克隆项目
+
+```bash
+git clone https://github.com/linshangchun/ai-host-navs.git
+# or
+git clone https://gitee.com/linshangchun/ai-host-navs.git
+
+cd ai-host-navs
+```
+
+### 2. 启动本地服务器
+
+```text
+ VScode 安装 Live Server 插件
+ 在编辑器目录树中右键 public/index.html，激活开启 Live Server 服务访问
+```
+
+### 3. 访问页面
+
+```text
+http://127.0.0.1:5500/public/index.html
+```
+
+## 配置说明
+
+### host.conf
+
+```yaml
+# 主站配置
+name: 站导
+description: 一个简洁高效的网站链接导航工具站
+
+# 配置数据调试输出(浏览器控制台)
+console_output: false
+
+# 图标配置
+use_text_icon: false       # true: 只使用文字图标
+use_google_favicon: false  # true: 使用 Google Favicon API
+
+# 固定快捷导航
+fixed_navs:
+  fixed:
+    top: 50%
+    right: 16px
+  items:
+    - name: GitHub
+      short_name: GIT
+      description: 国际代码托管平台
+      nav_to: https://github.com/linshangchun/host-navs.git
+    - name: Gitee
+      short_name: GIT
+      description: 国内代码托管平台
+      nav_to: https://gitee.com/linshangchun/host-navs.git
+
+# 导航分组
+navs:
+  - name: 代码托管
+    description: 代码仓库托管平台
+    items:
+      - name: GitHub
+        short_name: GIT # 可选，文字图标简称（最多4字符）
+        description: 国际代码托管平台
+        nav_to: https://github.com/linshangchun/host-navs.git
+      - name: Gitee
+        short_name: GIT
+        description: 国内代码托管平台
+        nav_to: https://gitee.com/linshangchun/host-navs.git
+  
+  - name: 代码部署
+    description: 代码构建与部署平台
+    items:
+      - name: Vercel
+        description: 提供项目云上构建和部署服务
+        nav_to: https://host-navs.vercel.app
+```
+
+### 配置项说明
+
+| 配置项 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| `name` | string | ✅ | 站点名称 |
+| `description` | string | ❌ | 站点描述 |
+| `console_output` | boolean | ❌ | 配置数据调试输出(浏览器控制台) |
+| `use_text_icon` | boolean | ❌ | 是否只使用文字图标 |
+| `use_google_favicon` | boolean | ❌ | 是否使用 Google Favicon API |
+| `navs` | array | ✅ | 导航分组集合 |
+| `navs[].name` | string | ✅ | 分组名称 |
+| `navs[].description` | string | ❌ | 分组描述 |
+| `navs[].items` | array | ✅ | 链接集合 |
+| `navs[].items[].name` | string | ✅ | 链接名称 |
+| `navs[].items[].short_name` | string | ❌ | 链接简称（用于文字图标） |
+| `navs[].items[].description` | string | ❌ | 链接描述 |
+| `navs[].items[].nav_to` | string | ✅ | 链接地址 |
+| `fixed_navs` | object | ❌ | 右侧固定快捷导航配置（可选） |
+| `fixed_navs.fixed` | object | ❌ | 位置设置，允许 top/right/bottom/left（值为数字(px)或字符串，例如 '50%'） |
+| `fixed_navs.fixed.top` | string\number | ❌ | 顶部位置，数字视为 px，例如 20 或 '10px' 或 '50%' |
+| `fixed_navs.fixed.right` | string\number | ❌ | 右侧位置 |
+| `fixed_navs.fixed.bottom` | string\number | ❌ | 下方位置 |
+| `fixed_navs.fixed.left` | string\number | ❌ | 左侧位置 |
+| `fixed_navs.items` | array | ❌ | 固定图标项，子字段同 `navs[].items[]`（name/short_name/description/nav_to） |
+
+### 固定快捷导航（fixed_navs）
+
+> 可选配置，用于在页面渲染竖排固定的快捷链接图标（例如 GitHub、Gitee 等）。图标渲染复用了项目现有的 favicon 获取逻辑（`use_text_icon` / `use_google_favicon` 都适用），点击会在新标签页打开 `nav_to`。
+
+示例：
+
+```yaml
+fixed_navs:
+  fixed:
+    top: 50%
+    right: 16px
+  items:
+    - name: GitHub
+      short_name: GIT
+      description: 国际代码托管平台
+      nav_to: https://github.com/linshangchun/host-navs.git
+    - name: Gitee
+      short_name: GIT
+      description: 国内代码托管平台
+      nav_to: https://gitee.com/linshangchun/host-navs.git
+```
+
+说明：
+
+- `fixed` 下的 `top`/`right`/`bottom`/`left` 可任选，优先级为显式设置的值；未设置则使用默认样式（默认右侧居中）。
+- 值可以为数字（会被视为像素并自动追加 `px`），也可以是字符串（如 `50%`, `2rem`, `10px`）。
+- 如果未配置 `fixed_navs` 或 `fixed_navs.items` 为空，则不会显示固定导航。
+
+### 图标获取策略
+
+```text
+┌─────────────────────────────────────────────────┐
+│              图标配置优先级                       │
+├─────────────────────────────────────────────────┤
+│                                                 │
+│  use_text_icon: true                            │
+│       ↓                                         │
+│  ┌─────────────────────────────────┐            │
+│  │  直接显示文字缩写（推荐局域网使用）   │            │
+│  │  short_name > 中文前2字 > 英文缩写 │            │
+│  └─────────────────────────────────┘            │
+│                                                 │
+│  use_text_icon: false                           │
+│  use_google_favicon: true                       │
+│       ↓                                         │
+│  ┌─────────────────────────────────┐            │
+│  │  使用 Google Favicon API         │            │
+│  │  失败后显示文字缩写                │            │
+│  └─────────────────────────────────┘            │
+│                                                 │
+│  use_text_icon: false                           │
+│  use_google_favicon: false                      │
+│       ↓                                         │
+│  ┌─────────────────────────────────┐            │
+│  │  尝试网站原生 favicon             │            │
+│  │  /favicon.ico                   │            │
+│  │  /favicon.png                   │            │
+│  │  /apple-touch-icon.png          │            │
+│  │  全部失败后显示文字缩写             │            │
+│  └─────────────────────────────────┘            │
+│                                                 │
+└─────────────────────────────────────────────────┘
+```
+
+### 文字缩写生成规则
+
+| 场景 | 示例 | 结果 |
+|------|------|------|
+| 配置 short_name | `short_name: GH` | `GH` |
+| 中文名称 | `有道翻译` | `有道` |
+| 英文多单词 | `Stack Overflow` | `SO` |
+| 英文单词 | `GitHub` | `GI` |
+
+## 响应式布局
+
+| 屏幕尺寸 | 卡片列数 | 说明 |
+|----------|---------|------|
+| < 640px | 1 列 | 手机端 |
+| 640px - 1024px | 2 列 | 平板端 |
+| > 1024px | 3 列 | 桌面端 |
+
+## 技术栈
+
+- **HTML5** - 语义化页面结构
+- **JavaScript (ES6+)** - 核心交互逻辑
+- **Tailwind CSS** - 原子化 CSS 框架，实现高效样式开发
+- **js-yaml** - YAML 解析库，处理配置文件
+
+## 部署
+
+### 静态托管
+
+本项目为纯静态网站，可部署到任意静态托管服务：
+
+- GitHub Pages
+- Vercel
+- etc...
+
+### Nginx 部署配置示例
+
+```nginx
+server {
+    listen 80;
+    server_name host-nav.example.com;
+    root /var/www/host-navs/public;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # 缓存静态资源
+    location ~* \.(svg|ico)$ {
+        expires 7d;
+        add_header Cache-Control "public, immutable";
+    }
+}
+```
+
+## CI / CD
+
+本项目支持以下两种常见的自动部署方式：
+
+1) GitHub Pages（通过 GitHub Actions 自动将 `public/` 部署到 `gh-pages` 分支）
+2) Vercel（通过 Vercel 平台导入你的 GitHub 项目集成进行部署）
+
+### GitHub Actions -> GitHub Pages
+
+- 已添加工作流文件：`.github/workflows/deploy-gh-pages.yml`。
+- 部署行为：每次 push 到 `main` 分支时，工作流会把 `public/` 目录发布到 GitHub Pages（`gh-pages` 分支）。
+- 默认使用内置 `${{ secrets.GITHUB_TOKEN }}`；如果工作流报错 `Permission to ... denied to github-actions[bot]`，请参考下面的故障排查步骤。
+
+#### 故障排查：`Permission to ... denied to github-actions[bot]`
+
+可能原因与解决办法：
+
+- 工作流权限不足：确保工作流声明了 `permissions: contents: write`（已在 `.github/workflows/deploy-gh-pages.yml` 中设置）。
+- 受保护分支/策略限制：如果 `gh-pages` 分支启用了分支保护且禁止 GitHub Actions 推送，请在仓库设置中允许特定 Actions 或临时关闭保护策略；或者使用 PAT（见下）。
+- 使用专用令牌（更可靠）：创建一个 **Fine‑grained personal access token**（或经典 PAT），只给目标仓库 `Contents: Read & write`、`Pages` 等最小权限，添加到仓库 Secrets（例如命名为 `GH_PAGES_TOKEN`），然后在工作流中将 `peaceiris/actions-gh-pages` 的 `github_token` 参数换成 `${{ secrets.GH_PAGES_TOKEN }}`。
+
+示例：在仓库设置 → **Secrets** → **Actions** 中添加 `GH_PAGES_TOKEN`，生成时建议设置过期时间并只赋最小权限。
+
+## 开源协议
+
+MIT License
+
+## 致谢
+
+- [host-navs](https://host-navs.vercel.app/)
+- [host-navs(repo)](https://github.com/linshangchun/host-navs.git/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [js-yaml](https://github.com/nodeca/js-yaml)
+- [Google Favicon Service](https://www.google.com/s2/favicons?domain=www.google.com&sz=64)
